@@ -1,8 +1,19 @@
 export interface Product {
-    code: string;
-    name: string;
-    price: number;
-    country: string;
-    timeFrom: Date;
-    timeTo: Date;
+  id?: number;
+  code: string;
+  name: string;
+  price: number;
+  categoryId: number;
+  countryId: number;
+  createdAt?: string;
+  endDate?: string;
+  category?: {
+      name: string;
+      parentId: number;
+      id: number;
   };
+  country?: {
+      name: string;
+      id: number;
+  };
+}
