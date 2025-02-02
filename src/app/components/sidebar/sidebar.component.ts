@@ -69,7 +69,7 @@ export class SidebarComponent implements OnInit {
   }
 
   loadProducts(node: Category) {
-    this.productService.getProductsByCategoryMock(node.id).subscribe({
+    this.productService.getProductsByCategory(node.id).subscribe({
       next: (products) => {
         this.productService.updateProducts(products);
       },
