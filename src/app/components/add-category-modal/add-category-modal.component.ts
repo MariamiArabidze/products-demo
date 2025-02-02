@@ -53,15 +53,25 @@ export class AddCategoryModalComponent {
 
       if (this.data.isEdit && this.data.editCategory) {
         category.id = this.data.editCategory.id;
-        this.categoryService.updateCategory(category).subscribe(() => {
-          this.dialogRef.close(true);
+        this.categoryService.updateCategory(category).subscribe({
+          next: () => {
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            console.error('Error updating category:', error);
+          }
         });
       } else {
         if (this.data.parentCategory) {
           category.parentId = this.data.parentCategory.id;
         }
-        this.categoryService.createCategory(category).subscribe(() => {
-          this.dialogRef.close(true);
+        this.categoryService.createCategory(category).subscribe({
+          next: () => {
+            this.dialogRef.close(true);
+          },
+          error: (error) => {
+            console.error('Error creating category:', error);
+          }
         });
       }
     }
