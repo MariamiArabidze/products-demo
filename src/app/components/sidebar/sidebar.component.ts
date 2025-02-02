@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Category } from '../../models/Category';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DeleteCategoryModalComponent } from '../delete-category-modal/delete-category-modal.component';
-
+import { AddCategoryModalComponent } from '../add-category-modal/add-category-modal.component';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -43,7 +43,7 @@ export class SidebarComponent implements OnInit {
   loadCategories() {
     this.categoryService.getCategoryTreeMock().subscribe({
       next: (data) => {
-        this.dataSource.data = [data];
+        this.dataSource.data = data;
       },
       error: (error) => {
         console.error('Error loading categories:', error);
@@ -54,7 +54,6 @@ export class SidebarComponent implements OnInit {
   hasChild = (_: number, node: Category) => !!node.children && node.children.length > 0;
 
   onNodeSelect(node: Category, event: MouseEvent) {
-    // Handle expand/collapse button click
     const target = event.target as HTMLElement;
     if (target.tagName === 'BUTTON' || target.tagName === 'MAT-ICON') {
       event.stopPropagation();
@@ -62,10 +61,8 @@ export class SidebarComponent implements OnInit {
       return;
     }
 
-    // Select the node
     this.selectedNode = node;
 
-    // If it's a leaf node (no children), load products
     if (!this.hasChild(0, node)) {
       this.loadProducts(node);
     }
@@ -83,21 +80,36 @@ export class SidebarComponent implements OnInit {
   }
 
   addCategory() {
-    if (!this.selectedNode) {
-      console.log('Adding root category');
-    } else {
-      console.log('Adding child category to:', this.selectedNode.name);
-    }
-    // TODO: Implement add category dialog with parentId = selectedNode?.id
+    const dialogRef = this.dialog.open(AddCategoryModalComponent, {
+      width: '400px',
+      data: {
+        parentCategory: this.selectedNode || null,  // null means root level
+        isEdit: false,
+        isRoot: !this.selectedNode  // true when no category is selected
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCategories();  // Reload the tree after adding
+      }
+    });
   }
 
   editCategory() {
     if (!this.selectedNode) return;
     console.log('Edit category:', this.selectedNode);
+    this.dialog.open(AddCategoryModalComponent, {
+      width: '400px',
+      data: {
+        editCategory: this.selectedNode,
+        isEdit: true
+      }
+    });
   }
 
   deleteCategory() {
-    if (!this.selectedNode) return;
+    if (!this.selectedNode || !this.selectedNode.id) return;
 
     const dialogRef = this.dialog.open(DeleteCategoryModalComponent, {
       width: '400px',
@@ -107,10 +119,12 @@ export class SidebarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result === true) {
-        console.log('Delete category:', this.selectedNode);
-        // TODO: Call your service to delete the category
-        // this.categoryService.deleteCategory(this.selectedNode.id)
+      if (result === true && this.selectedNode?.id) {
+        this.categoryService.deleteCategory(this.selectedNode.id).subscribe({
+          next: () => {
+            this.loadCategories();
+          }
+        });
       }
     });
   }

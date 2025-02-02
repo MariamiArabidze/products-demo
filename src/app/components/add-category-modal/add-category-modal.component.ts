@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Category } from '../../models/Category';
+import { CategoryService } from '../../services/category.service';
 export interface CategoryModalData {
   parentCategory?: Category;
   editCategory?: Category;
@@ -32,7 +33,8 @@ export class AddCategoryModalComponent {
   constructor(
     private dialogRef: MatDialogRef<AddCategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CategoryModalData,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private categoryService: CategoryService
   ) {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required]
@@ -46,8 +48,19 @@ export class AddCategoryModalComponent {
   }
 
   onSubmit() {
-    if (this.categoryForm.valid) {
+    if (this.categoryForm.valid) { 
+      const category = this.categoryForm.value;
+      if (this.data.isEdit) {
+        category.id = this.data.editCategory?.id;
+      }
+      this.categoryService.createCategory(category).subscribe(() => {
+        this.dialogRef.close(true);
+      });
       this.dialogRef.close(this.categoryForm.value);
     }
+  }
+
+  onCancel() {
+    this.dialogRef.close();
   }
 }

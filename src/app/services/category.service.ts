@@ -12,62 +12,64 @@ export class CategoryService {
 
     constructor(private http: HttpClient) { }
 
-    getCategoryTree(): Observable<Category> {
-        return this.http.get<Category>(`${this.apiUrl}/category-tree`);
+    getCategoryTree(): Observable<Category[]> {
+        return this.http.get<Category[]>(`${this.apiUrl}/category-tree`);
     }
 
-    getCategoryTreeMock(): Observable<Category> {
-        const mockCategories: Category = {
-            id: 1,
-            name: "Products",
-            parentId: null,
-            children: [
-                {
-                    id: 4,
-                    name: "Cigarettes",
-                    parentId: 1,
-                    children: [
-                        {
-                            id: 21,
-                            name: "Winston",
-                            parentId: 4,
-                            children: []
-                        },
-                        {
-                            id: 22,
-                            name: "Marlboro",
-                            parentId: 4,
-                            children: []
-                        },
-                        {
-                            id: 23,
-                            name: "Camel",
-                            parentId: 4,
-                            children: []
-                        }
-                    ]
-                },
-                {
-                    id: 5,
-                    name: "Beverages",
-                    parentId: 1,
-                    children: [
-                        {
-                            id: 24,
-                            name: "Soft Drinks",
-                            parentId: 5,
-                            children: []
-                        },
-                        {
-                            id: 25,
-                            name: "Energy Drinks",
-                            parentId: 5,
-                            children: []
-                        }
-                    ]
-                }
-            ]
-        };
+    getCategoryTreeMock(): Observable<Category[]> {
+        const mockCategories: Category[] = [
+            {
+                id: 1,
+                name: "Products",
+                parentId: null,
+                children: [
+                    {
+                        id: 4,
+                        name: "Cigarettes",
+                        parentId: 1,
+                        children: [
+                            {
+                                id: 21,
+                                name: "Winston",
+                                parentId: 4,
+                                children: []
+                            },
+                            {
+                                id: 22,
+                                name: "Marlboro",
+                                parentId: 4,
+                                children: []
+                            },
+                            {
+                                id: 23,
+                                name: "Camel",
+                                parentId: 4,
+                                children: []
+                            }
+                        ]
+                    },
+                    {
+                        id: 5,
+                        name: "Beverages",
+                        parentId: 1,
+                        children: [
+                            {
+                                id: 24,
+                                name: "Soft Drinks",
+                                parentId: 5,
+                                children: []
+                            },
+                            {
+                                id: 25,
+                                name: "Energy Drinks",
+                                parentId: 5,
+                                children: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
 
         return of(mockCategories);
     }
