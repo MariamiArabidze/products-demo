@@ -83,27 +83,31 @@ export class SidebarComponent implements OnInit {
     const dialogRef = this.dialog.open(AddCategoryModalComponent, {
       width: '400px',
       data: {
-        parentCategory: this.selectedNode || null,  // null means root level
+        parentCategory: this.selectedNode || null,
         isEdit: false,
-        isRoot: !this.selectedNode  // true when no category is selected
+        isRoot: !this.selectedNode
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadCategories();  // Reload the tree after adding
+        this.loadCategories();
       }
     });
   }
 
   editCategory() {
     if (!this.selectedNode) return;
-    console.log('Edit category:', this.selectedNode);
-    this.dialog.open(AddCategoryModalComponent, {
+    const dialogRef = this.dialog.open(AddCategoryModalComponent, {
       width: '400px',
       data: {
         editCategory: this.selectedNode,
         isEdit: true
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCategories();
       }
     });
   }
