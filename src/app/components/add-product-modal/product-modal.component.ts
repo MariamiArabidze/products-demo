@@ -82,8 +82,8 @@ export class ProductModalComponent {
         name: data.product.name,
         price: data.product.price,
         country: data.product.country,
-        timeFrom: data.product.timeFrom,
-        timeTo: data.product.timeTo
+        timeFrom: data.product.createdAt,
+        timeTo: data.product.endDate
       });
     }
   }
