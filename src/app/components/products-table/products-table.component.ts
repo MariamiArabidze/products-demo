@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { ProductModalComponent } from '../add-product-modal/product-modal.component';
 import { Product } from '../../models/Product';
+import { DeleteProductModalComponent } from '../delete-product-modal/delete-product-modal.component';
 @Component({
   selector: 'app-products-table',
   standalone: true,
@@ -78,6 +79,29 @@ export class ProductsTableComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Updated product:', result.product);
+      }
+    });
+  }
+
+
+  openDeleteModal(product: any) {
+    const dialogRef = this.dialog.open(DeleteProductModalComponent, {
+      width: '400px',
+      data: { product: product }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        // Handle the delete confirmation here
+        // You might want to remove the item from the dataSource
+        const index = this.dataSource.findIndex(item => item.code === product.code);
+        if (index > -1) {
+          this.dataSource.splice(index, 1);
+          // If you're using MatTableDataSource, you need to refresh it:
+          // this.dataSource._updateChangeSubscription();
+          // Also clear the selection
+          this.selection.clear();
+        }
       }
     });
   }
