@@ -10,6 +10,7 @@ import { ProductModalComponent } from '../add-product-modal/product-modal.compon
 import { Product } from '../../models/Product';
 import { DeleteProductModalComponent } from '../delete-product-modal/delete-product-modal.component';
 import { ProductService } from '../../services/product.service';
+import { DiagramComponent } from '../diagram/diagram.component';
 @Component({
   selector: 'app-products-table',
   standalone: true,
@@ -79,6 +80,12 @@ export class ProductsTableComponent implements OnInit {
       }
     });
   }
+
+  openDiagram() {
+    const dialogRef = this.dialog.open(DiagramComponent, {
+      data: { products: this.dataSource }
+    });
+  } 
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
