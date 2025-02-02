@@ -3,9 +3,12 @@
     <button
       mat-mini-fab
       color="primary"
+      [disabled]="!selectedNode"
       (click)="addCategory()"
       matTooltip="{{
-        selectedNode ? 'Add child to ' + selectedNode.name : 'Add root category'
+        selectedNode
+          ? 'Add child to ' + selectedNode.name
+          : 'Select a category first'
       }}"
     >
       <mat-icon>add</mat-icon>
@@ -13,8 +16,8 @@
     <button
       mat-icon-button
       color="primary"
-      (click)="editCategory()"
       [disabled]="!selectedNode"
+      (click)="editCategory()"
       matTooltip="Edit category"
     >
       <mat-icon>edit</mat-icon>
@@ -22,8 +25,8 @@
     <button
       mat-icon-button
       color="warn"
-      (click)="deleteCategory()"
       [disabled]="!selectedNode"
+      (click)="deleteCategory()"
       matTooltip="Delete category"
     >
       <mat-icon>delete</mat-icon>

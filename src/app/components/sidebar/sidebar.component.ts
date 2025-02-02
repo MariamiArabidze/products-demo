@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Category } from '../../models/Category';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DeleteCategoryModalComponent } from '../delete-category-modal/delete-category-modal.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -97,7 +98,21 @@ export class SidebarComponent implements OnInit {
 
   deleteCategory() {
     if (!this.selectedNode) return;
-    console.log('Delete category:', this.selectedNode);
+
+    const dialogRef = this.dialog.open(DeleteCategoryModalComponent, {
+      width: '400px',
+      data: {
+        category: this.selectedNode
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        console.log('Delete category:', this.selectedNode);
+        // TODO: Call your service to delete the category
+        // this.categoryService.deleteCategory(this.selectedNode.id)
+      }
+    });
   }
 
   isSelected(node: Category): boolean {
