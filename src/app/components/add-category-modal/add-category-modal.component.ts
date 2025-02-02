@@ -48,15 +48,23 @@ export class AddCategoryModalComponent {
   }
 
   onSubmit() {
-    if (this.categoryForm.valid) { 
+    console.log(this.categoryForm.value);
+    if (this.categoryForm.valid) {
       const category = this.categoryForm.value;
-      if (this.data.isEdit) {
-        category.id = this.data.editCategory?.id;
+
+      if (this.data.isEdit && this.data.editCategory) {
+        category.id = this.data.editCategory.id;
+        this.categoryService.updateCategory(category.id, category).subscribe(() => {
+          this.dialogRef.close(true);
+        });
+      } else {
+        if (this.data.parentCategory) {
+          category.parentId = this.data.parentCategory.id;
+        }
+        this.categoryService.createCategory(category).subscribe(() => {
+          this.dialogRef.close(true);
+        });
       }
-      this.categoryService.createCategory(category).subscribe(() => {
-        this.dialogRef.close(true);
-      });
-      this.dialogRef.close(this.categoryForm.value);
     }
   }
 

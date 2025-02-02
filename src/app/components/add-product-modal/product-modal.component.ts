@@ -90,11 +90,20 @@ export class ProductModalComponent {
 
   onSubmit() {
     if (this.productForm.valid) {
+      const { newCountry, ...productData } = this.productForm.value;
+      
       const result = {
         mode: this.isEditMode ? 'edit' : 'add',
-        product: this.productForm.value
+        product: productData
       };
+      
+      console.log('Form submitted:', result);
       this.dialogRef.close(result);
+    } else {
+      Object.keys(this.productForm.controls).forEach(key => {
+        const control = this.productForm.get(key);
+        control?.markAsTouched();
+      });
     }
   }
 
