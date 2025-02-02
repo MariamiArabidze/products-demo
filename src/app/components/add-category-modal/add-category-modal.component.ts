@@ -53,7 +53,7 @@ export class AddCategoryModalComponent {
 
       if (this.data.isEdit && this.data.editCategory) {
         category.id = this.data.editCategory.id;
-        this.categoryService.updateCategory(category.id, category).subscribe(() => {
+        this.categoryService.updateCategory(category).subscribe(() => {
           this.dialogRef.close(true);
         });
       } else {

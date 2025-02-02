@@ -82,8 +82,8 @@ export class CategoryService {
         return this.http.post<Category>(this.apiUrl, category);
     }
 
-    updateCategory(id: number, category: Partial<Category>): Observable<Category> {
-        return this.http.put<Category>(`${this.apiUrl}/${id}`, category);
+    updateCategory(category: Partial<Category>): Observable<Category> {
+        return this.http.put<Category>(`${this.apiUrl}/${category.id}`, { name: category.name });
     }
 
     deleteCategory(id: number): Observable<void> {
