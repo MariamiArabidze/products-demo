@@ -5,7 +5,7 @@
   </div>
 </h2>
 
-<form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="categoryForm">
   <mat-dialog-content>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Category Name</mat-label>
@@ -21,7 +21,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close>დახურვა</button>
     <button
       mat-raised-button
       color="primary"

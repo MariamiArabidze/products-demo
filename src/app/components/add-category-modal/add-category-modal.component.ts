@@ -48,7 +48,6 @@ export class AddCategoryModalComponent {
   }
 
   onSubmit() {
-    console.log(this.categoryForm.value);
     if (this.categoryForm.valid) {
       const category = this.categoryForm.value;
 
